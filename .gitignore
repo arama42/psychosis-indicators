@@ -1,0 +1,5 @@
+# ignore following files
+data/
+*.log
+.idea/
+.DS_Store
