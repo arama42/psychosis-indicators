@@ -1,5 +1,6 @@
 # ignore following files
 data/
+output/
 *.log
 .idea/
 .DS_Store
