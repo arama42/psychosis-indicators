@@ -1,7 +1,12 @@
 # practicum
 Psychosis in teens via gesture analysis
 
-## Visual Features 
+## Solution Architecture 
+![Architecture screenshot](./architecture.png)
+
+## Data Processing Pipeline 
+
+## Visual Features - Extracted Using combined_auto_run.ipynb 
 1. **Time_in_seconds**: float
 - It represents the time in seconds corresponding to the current frame number divided by the frames per second (fps)
 
@@ -12,7 +17,7 @@ Psychosis in teens via gesture analysis
 - It measures the cumulative total movement detected in the current frame compared to previous frame within 1 second. The keypoints tracked are LEFT_WRIST, RIGHT_WRIST, LEFT_ANKLE, RIGHT_ANKLE
 
 4. **Pose_openness**: float;
-- It calculates the openness of a pose based on the landmarks of the holistic model. The landmark used here are LEFT_SHOULDER, RIGHT_SHOULDER, LEFT_HIP, RIGHT_HIP, LEFT_WRIST, RIGHT_WRIST. The landmark coordinate value are multiplied by image_w and image_h is to scale the coordinates from normalized values (ranging from 0 to 1) to the corresponding pixel coordinates in the image. / openness of main body
+- It calculates the openness of a pose based on the landmarks of the holistic model. It is calculated by using the convex_hull value of all the main body parts divided by the convex hull value of all the core body parts. Main body parts: shoulders, hips, elbows and wrists. Core body parts: shoulders and hips. 
 
 5. **Leaning**: str [‘Backward’, ‘Forward’];
 - It determines the leaning direction of the person based on the position of the nose relative to the hips.
@@ -38,26 +43,62 @@ Psychosis in teens via gesture analysis
 12. **left_hand_state** & **right_hand_state**: str [‘Closed’, ‘Open’]
 - It determines whether a hand is ‘CLOSED’ or ‘OPEN’ based on the euclidean distance between THUMB_TIP and INDEX_TIP landmarks. 
 
-## Acoustic Features
+## Acoustic Features - Extracted Using acoustic_feature.ipynb 
 1. **Avg_pitch**: float
-- It calculates the average pitch of the 10 seconds audio segment using the piptrack function from the librosa library.
+- It calculates the average pitch of the audio segment using the piptrack function from the librosa library.
 
 2. **Avg_intensity**: float
-- It calculates the average intensity of the 10 seconds audio segment using the piptrack function from the librosa library.
+- It calculates the average intensity of the audio segment using the piptrack function from the librosa library.
 
 3. **Transcription**: string 
 - It transcribes the 10 seconds audio segment using the Google Speech Recognition service through the recognize_google method from the speech_recognition library.
 
+4. **Entity Extraction**: list 
+- It extracts entity mentioned in the transcriotion, for example, date, organization, etc. 
+
 ## Cross-modality Features
-**Contradiction** between expected gestures and actual gestures
+- It analysis the correlation between austic features (pitch and intensity) and numerical visual features (total_movement_per_second and pose_openness)
 
-This code aims to identify and output the rows where there are contradictions between the expected gestures based on words in the transcript and the actual recorded gestures. The contradictions are detected by comparing the values in the dataframe with the expected values specified in the word_gesture_map dictionary.
+## BERT Model - bert_model.ipynb
+This code performs text classification using the BERT model. It reads transcriptions from a CSV file, combines them based on video names, and then splits the data into training, validation, and test sets. It uses the BertTokenizer from the Hugging Face transformers library to tokenize the input text and encode labels. The BERT model is then trained and evaluated using the Trainer class.
 
-Steps undertook:
-- Split the transcript into individual words and store them in the words variable.
-- Iterate over each word in the words list.
-- If the word is present in the word_gesture_map dictionary:
-  - Get the expected gestures associated with the word.
-  - Iterate over each gesture and expected value pair.
-  - Compare the expected value with the actual value in the row for the corresponding gesture.
-- If a contradiction is found (the values don't match), print the word, the actual value, and the expected value, and return the row.
+### Dependencies
+This code requires the following libraries to be installed:
+- pandas
+- numpy
+- sklearn
+- torch
+- transformers
+
+## Random Forest Model - random_forest.ipynb
+This code implements a random forest model for gesture classification. It performs the following steps:
+- Data Pre-processing 
+  - a. Deal with empty values
+  - b. Feature engineering
+  - c. One-hot encoding
+  - d. Drop duplicate columns
+  - e. Scaling
+- Correlation analysis 
+- Random Forest Model
+  - Train Test split based on video level data records (to avoid data leakage)
+  - Train test split rate: 0.2 
+- Final Performance on testing dataset: 0.625 
+### Dependencies
+This code requires the following libraries to be installed:
+- pandas
+- sklearn
+- os
+- numpy
+- seaborn
+- matplotlib
+
+## RNN Model - rnn.ipynb 
+The RNN model follows the exact same steps as random forest for the data pre-processing. 
+- Final Performance on testing dataset: 0.75 
+### Dependencies 
+This code requires the following libraries to be installed:
+- pandas
+- sklearn
+- os
+- numpy
+- tensorflow
