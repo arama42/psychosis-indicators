@@ -116,7 +116,7 @@ This notebook contains graphs and plots to analyze the relationships gestures of
 - The last graph shows all the categorical features and their frequencies by video IDs. 
 
 The graph below shows the total movement per second-micro level analysis without outliers: 
-![Screenshot 2023-06-04 171115](https://git![Screenshot 2023-06-04 171145](https://github.com/arama42/practicum/assets/64893010/e62041cf-2b3d-44ae-9a0f-a14d880add89)
+![Screenshot 2023-06-04 171115](https://github.com/arama42/practicum/assets/64893010/98d7afa6-c96a-492d-b46c-9b0c78911ea5)
 
 And then, this graph shows the pose openness-micro level analysis without outliers:
 ![Screenshot 2023-06-04 171145](https://github.com/arama42/practicum/assets/64893010/8331da83-3b3b-4b47-83af-63bfe21ef551)
