@@ -1,5 +1,10 @@
-# practicum
+# Practicum
 Psychosis in teens via gesture analysis
+
+## Data Overview:
+- Gesture data is reported for each second 
+- Clinical High Risk: with label = 1, 20 videos, each ~ 300 seconds, total 5,545 records in the gesture dataframe 
+- Healthy Control: with label = 0, 17 videos, each ~ 300 seconds, total 5,109 records in the gesture dataframe 
 
 ## Solution Architecture 
 ![Architecture screenshot](./architecture.png)
@@ -102,3 +107,43 @@ This code requires the following libraries to be installed:
 - os
 - numpy
 - tensorflow
+
+## Exploratory Data Analysis - EDA.ipynb
+This notebook contains graphs and plots to analyze the relationships gestures of CHR groups vs HC group.
+- The first graph shows line plots of pose openness and total movement per second, where red lines represent CHR and blue lines represent HC group.
+- The next set of graphs are box plots for the features left_arm_angle, pose_openness, right_arm_angle, and total_movement_per_second. These graphs consist of three plots. The first plot shows a box plot for each video in the CHR group with video IDs on the x axis and the feature values on the y axis. The second plot shows the same thing for each video in the HC group. The third plot is combined over both the groups by averaging. 
+- Then there is a bar graph showing all the features and their respective average frequencies for each group.  
+- The last graph shows all the categorical features and their frequencies by video IDs. 
+
+The graph below shows the total movement per second-micro level analysis without outliers: 
+![Screenshot 2023-06-04 171115](https://git![Screenshot 2023-06-04 171145](https://github.com/arama42/practicum/assets/64893010/e62041cf-2b3d-44ae-9a0f-a14d880add89)
+
+And then, this graph shows the pose openness-micro level analysis without outliers:
+![Screenshot 2023-06-04 171145](https://github.com/arama42/practicum/assets/64893010/8331da83-3b3b-4b47-83af-63bfe21ef551)
+
+Insights from EDA: 
+- Due to the small size of the experimental dataset, the analysis may be highly biased.
+- There is no significant difference between the mean of gestures of CHR groups vs HC group. 
+- Similar behaviour holds true for all the features.
+- On doing a correlation analysis, we found that all the features are contributing to the results, but none of them are contributing to a very high extent individually.
+
+## Future Work
+- Data Perspective:
+  Extract possible landmarks from videos in parallel batches.
+  Improve efficiency and enable processing of multiple videos simultaneously.
+- Feature Extraction Perspective 
+  - Gesture: 
+    Implement gaze tracking to determine visual focus.
+    Apply facial expression analysis to interpret emotional cues.
+  - Acoustic:
+    Develop accurate speech recognition for precise transcription.
+    Remove interviewer's audio to focus solely on the interviewee's speech and gestures.
+- Modeling Perspective:
+  Utilize ensemble learning techniques to combine acoustic and gesture models.
+   
+
+
+
+
+
+
