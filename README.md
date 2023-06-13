@@ -1,5 +1,5 @@
 # Practicum
-Psychosis in teens via gesture analysis
+Identifying Cinical Indicators of Psychosis in teens via Gesture Analysis
 
 ## Data Overview:
 - Gesture data is reported for each second 
@@ -11,7 +11,13 @@ Psychosis in teens via gesture analysis
 
 ## Data Processing Pipeline 
 
-## Visual Features - Extracted Using combined_auto_run.ipynb 
+## Visual Features - Extracted Using combined_auto_run.ipynb
+To extract gesture related features this file can be run. It will create a new CSV file with extracted
+features.
+The video directories for both Clinical High Risk(CHR) and Healthy Control(HC) are expected to be under 'data' directory.
+If this needs to be updated, it can be updated by changing chr_video_path and hc_video_path respectively.
+Output CSV and annotated video files are stored under 'output' directory. It can be updated by changing csv_out_path and video_out_path.
+
 1. **Time_in_seconds**: float
 - It represents the time in seconds corresponding to the current frame number divided by the frames per second (fps)
 
@@ -47,6 +53,17 @@ Psychosis in teens via gesture analysis
 
 12. **left_hand_state** & **right_hand_state**: str [‘Closed’, ‘Open’]
 - It determines whether a hand is ‘CLOSED’ or ‘OPEN’ based on the euclidean distance between THUMB_TIP and INDEX_TIP landmarks. 
+
+## Visual Features using Raw file & Extraction - Using landmarks.ipynb and features.ipynb
+
+The visual features mentioned in the previous is also split into two separate processes that can be executed independently.
+This is done so that the processes can be made more efficient in the future as the training data size increases.
+**landmarks.ipynb** : This file generates landmarks on the input video files and the raw landmark coordinates are saved to a CSV file.
+Input directory(input_dir) is a folder containing the video file for either CHR or HC. Output directory(output_dir) will have the final 
+raw csv file, and output video with annotated landmarks saved.
+**features.ipynb** : This file will read the raw landmarks CSV file and perform missing value imputation, and smoothing( moving average smoothing, window size can be adjusted with window_size parameter).
+All the gesture features mentioned in the previous step is now extracted from this raw data.
+Output directory(output_dir) is the directory containing raw csv file, the features will be saved in the same directory with -features.csv suffix.
 
 ## Acoustic Features - Extracted Using acoustic_feature.ipynb 
 1. **Avg_pitch**: float
